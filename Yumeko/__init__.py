@@ -1,3 +1,14 @@
+import asyncio
+
+# Python 3.13 fix – create event loop if missing
+try:
+    asyncio.get_event_loop()
+except RuntimeError:
+    asyncio.set_event_loop(asyncio.new_event_loop())
+
+# Disable uvloop strict policy for Python 3.13
+asyncio.set_event_loop_policy(asyncio.DefaultEventLoopPolicy())
+
 from pyrogram import Client 
 from config import config
 import uvloop
@@ -9,6 +20,12 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import time 
 from datetime import datetime
 import pytz
+
+# Safe uvloop install
+try:
+    uvloop.install()
+except Exception:
+    pass
 
 start_time = time.time() 
 ist = pytz.timezone("Asia/Kolkata")
